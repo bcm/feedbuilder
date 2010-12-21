@@ -140,7 +140,7 @@ class Nug
   end
 
   def entry_id
-    self.class.feed_tag_uri("#{self.class.feed_id_path}/#{self.id}")
+    self.class.feed_tag_uri("#{self.class.feed_id_path}/#{self.id}", :date => self.created_at)
   end
 
   def entry_summary

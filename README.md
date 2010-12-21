@@ -14,18 +14,23 @@ feedbuilder extends Rails to simplify the process of building and delivering Ato
         name # a persistent attribute
       end
 
+      def entry_summary
+        Atom::Content::Text.new("A nug named #{name}")
+      end
+
       def entry_content
         Atom::Content::Html.new("<p>A nug named #{name}</p>")
       end
     end
 
-    class NugController < ApplicationController
+    class NugsController < ApplicationController
       def index
         respond_to do |format|
           format.atom do
             nugs = Nug.paginate(:page => params[:page], :page_size => params[:page_size])
             send_feed("nugs.atom", :etag => nugs) do
-              Nug.build_feed(nugs, feed_url_builder(:nugs_url), :feed_title => "Bucket o' nugs") do |nug, entry|
+              Nug.build_feed(nugs, feed_url_builder(:nugs_url), :feed_title => "Bucket o' nugs",
+                             :feed_id_path => nugs_path) do |nug, entry|
                  entry.id = Nug.feed_tag_uri(nug_path(nug), :date => nug.created_at)
                  entry.links << Atom::Link.new(:href => nug_url(nug), :rel => :alternate, :type => 'text/html')
               end

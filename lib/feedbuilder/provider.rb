@@ -45,7 +45,7 @@ module FeedBuilder
 
     def build_entry(model,  &block)
       Atom::Entry.new do |entry|
-        entry.id = model.entry_id
+        entry.id = model.entry_id if model.respond_to?(:entry_id)
         entry.title = model.entry_title if model.respond_to?(:entry_title)
         entry.published = model.respond_to?(:entry_published) ? model.entry_published : model.created_at
         entry.updated = model.respond_to?(:entry_updated) ? model.entry_updated : model.updated_at
