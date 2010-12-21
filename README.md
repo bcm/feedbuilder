@@ -47,3 +47,7 @@ Feedbuilder is a tiny utility that simplifies the process of building and delive
         <content type="html">&lt;p&gt;A nug named Nug 3&lt;/p&gt;</content>
       </entry>
     </feed>
+
+## Copyright
+
+Copyright (c) 2010 Brian Moseley. See LICENSE for details.
