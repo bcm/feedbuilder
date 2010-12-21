@@ -6,9 +6,6 @@ module FeedBuilder
     mattr_accessor :feed_id
 
     def build_feed(collection, url_builder, options = {}, &block)
-      unless self.feed_id.present? || options.include?(:feed_id) || options.include?(:feed_id_path)
-        raise ArgumentError, 'One of self.feed_id, :feed_id option or :feed_id_path option must be provided'
-      end
       feed_updated = nil
       collection.each do |model|
         if feed_updated.nil? || model.updated_at > feed_updated
@@ -20,6 +17,8 @@ module FeedBuilder
           options[:feed_id]
         elsif options.include?(:feed_id_path)
           feed_tag_uri(options[:feed_id_path])
+        elsif self.feed_id_path.present?
+          feed_tag_uri(self.feed_id_path)
         else
           self.feed_id
         end
@@ -55,26 +54,12 @@ module FeedBuilder
       end
     end
 
+    # as per http://diveintomark.org/archives/2004/05/28/howto-atom-id
     def feed_tag_uri(path, options = {})
       domain = options[:domain] || self.feed_id_domain || FeedBuilder.feed_id_domain
       date = options[:date] || self.feed_id_date || Date.today
       date_str = date.acts_like_date?? date.strftime("%Y-%m-%d") : date.to_s
       "tag:#{domain},#{date_str}:#{path.gsub(/\#/, '/')}"
     end
-  end
-end
-
-class ActiveRecord::Base
-  def self.acts_as_feed_provider(options = {})
-    unless (options.include?(:feed_id_domain) && options.include?(:feed_id_path)) || options.include?(:feed_id)
-      raise ArgumentError, 'Must include either :feed_id_domain and :feed_id_path or :feed_id'
-    end
-
-    extend FeedBuilder::Provider
-
-    self.feed_id_domain = options[:feed_id_domain]
-    self.feed_id_date = options[:feed_id_date]
-    self.feed_id_path = options[:feed_id_path]
-    self.feed_id = options[:feed_id]
   end
 end

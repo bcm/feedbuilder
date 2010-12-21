@@ -5,9 +5,12 @@ describe FeedBuilder::Provider do
     end
 
     it "sets id to the global feed id" do
+      feed_id_path = Nug.feed_id_path
+      Nug.feed_id_path = nil
       Nug.feed_id = 'foobar'
       feed(:feed_id => nil).id.should == Nug.feed_id
       Nug.feed_id = nil
+      Nug.feed_id_path = feed_id_path
     end
 
     it "sets id as provided" do
@@ -93,7 +96,7 @@ def feed(options = {})
   else
     options[:feed_id] = Nug.feed_tag_uri(Nug.feed_id_path)
   end
-  Nug.build_feed(@nugs, url_builder(:nugs_url), options)
+  Nug.build_feed(@nugs, FeedBuilder::UrlBuilder.new('/', '/nugs'), options)
 end
 
 def entry
@@ -109,45 +112,4 @@ end
 
 def self_link
   feed.links.detect {|l| l.rel == :self}
-end
-
-def url_builder(sym)
-  ub = double()
-  ub.stub(:root_url) { '/' }
-  ub.stub(sym) { "/#{sym}" }
-  FeedBuilder::UrlBuilder.new(ub, sym)
-end
-
-class Nug
-  extend FeedBuilder::Provider
-  self.feed_id_domain = 'maz.org'
-  self.feed_id_path = '/nugs'
-  attr_reader :id, :name
-
-  def initialize(id, name)
-    @id = id
-    @name = name
-    @created_at = DateTime.now
-    @updated_at = DateTime.now
-  end
-
-  def created_at
-    @created_at
-  end
-
-  def updated_at
-    @updated_at
-  end
-
-  def entry_id
-    self.class.feed_tag_uri("#{self.class.feed_id_path}/#{self.id}", :date => self.created_at)
-  end
-
-  def entry_summary
-    Atom::Content::Text.new("A nug named #{self.name}")
-  end
-
-  def entry_content
-    Atom::Content::Html.new("<p>A nug named #{self.name}</p>")
-  end
 end

@@ -1,8 +1,9 @@
-require 'action_controller'
-require 'active_record'
 require 'atom'
+require 'active_support/core_ext/date/acts_like'
+require 'active_support/core_ext/date_time/acts_like'
+require 'active_support/core_ext/module/attribute_accessors'
+require 'active_support/core_ext/object/blank'
 
-require 'feedbuilder/controller'
 require 'feedbuilder/provider'
 require 'feedbuilder/url_builder'
 

@@ -1,4 +1,5 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'lib/feedbuilder.rb'
+require 'lib/feedbuilder'
+require 'nug'

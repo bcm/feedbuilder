@@ -9,13 +9,13 @@ Gem::Specification.new do |s|
   s.authors     = ["Brian Moseley"]
   s.email       = ["bcm@maz.org"]
   s.homepage    = ""
-  s.summary     = %q{Feed building utilities for Rails}
-  s.description = %q{Simplifies feed building for Rails models and controllers}
+  s.summary     = %q{An easier way to build Atom feeds}
+  s.description =
+    %q{A utility that simplifies the process of building Atom feeds from collections of well-behaved objects}
 
   s.rubyforge_project = "feedbuilder"
 
-  s.add_dependency 'actionpack', '~> 3.0'
-  s.add_dependency 'activerecord', '~> 3.0'
+  s.add_dependency 'activesupport', '~> 3.0'
   s.add_dependency 'ratom'
   s.add_development_dependency 'rspec', '~> 2.0'
 
