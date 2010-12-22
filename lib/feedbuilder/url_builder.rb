@@ -39,7 +39,7 @@ module FeedBuilder
       copy = url.dup
       unless params.empty?
         qs = params.inject([]) {|m, kv| m << "#{kv[0]}=#{kv[1]}"}
-        sep = copy =~ /\?/ ? '&' : '?'
+        sep = copy =~ /\?/ ? '&amp;' : '?'
         copy << "#{sep}#{URI.escape(qs.join('&'))}"
       end
       copy
