@@ -26,16 +26,20 @@ module FeedBuilder
         feed.updated = feed_updated
         feed.links << Atom::Link.new(:href => url_builder.html_url, :rel => :via, :type => 'text/html')
         feed.links << Atom::Link.new(:href => url_builder.self_url, :rel => :self, :type => 'application/atom+xml')
-        if collection.respond_to?(:total_pages) && collection.respond_to?(:current_page)
+        if collection.respond_to?(:total_pages) && collection.respond_to?(:current_page) &&
+            collection.respond_to?(:per_page)
           if collection.total_pages > 1
-            feed.links << Atom::Link.new(:href => url_builder.first_url, :rel => :first)
+            feed.links << Atom::Link.new(:href => url_builder.first_url(collection.per_page), :rel => :first)
             if collection.current_page > 1
-              feed.links << Atom::Link.new(:href => url_builder.prev_url(collection.current_page), :rel => :previous)
+              feed.links << Atom::Link.new(:href => url_builder.prev_url(collection.current_page, collection.per_page),
+                :rel => :previous)
             end
             if collection.current_page < collection.total_pages
-              feed.links << Atom::Link.new(:href => url_builder.next_url(collection.current_page), :rel => :next)
+              feed.links << Atom::Link.new(:href => url_builder.next_url(collection.current_page, collection.per_page),
+                :rel => :next)
             end
-            feed.links << Atom::Link.new(:href => url_builder.last_url(collection.total_pages), :rel => :last)
+            feed.links << Atom::Link.new(:href => url_builder.last_url(collection.total_pages, collection.per_page),
+              :rel => :last)
           end
         end
         collection.each {|model| feed.entries << build_entry(model, &block)}

@@ -16,32 +16,33 @@ module FeedBuilder
         end
       end
       @page_param = options[:page_param] || :page
-      @page_size_param = options[:page_size_param] || :page_size
+      @per_page_param = options[:per_page_param] || :per_page
     end
 
-    def first_url(page_size)
-      add_params(self_url, @page_param => 1, @page_size_param => page_size)
+    def first_url(per_page)
+      add_params(self_url, @page_param => 1, @per_page_param => per_page)
     end
 
-    def next_url(current_page, page_size)
-      add_params(self_url, @page_param => current_page + 1, @page_size_param => page_size)
+    def next_url(current_page, per_page)
+      add_params(self_url, @page_param => current_page + 1, @per_page_param => per_page)
     end
 
-    def prev_url(current_page, page_size)
-      add_params(self_url, @page_param => current_page - 1, @page_size_param => page_size)
+    def prev_url(current_page, per_page)
+      add_params(self_url, @page_param => current_page - 1, @per_page_param => per_page)
     end
 
-    def last_url(total_pages, page_size)
-      add_params(self_url, @page_param => total_pages, @page_size_param => page_size)
+    def last_url(total_pages, per_page)
+      add_params(self_url, @page_param => total_pages, @per_page_param => per_page)
     end
 
     def add_params(url, params = {})
+      copy = url.dup
       unless params.empty?
         qs = params.inject([]) {|m, kv| m << "#{kv[0]}=#{kv[1]}"}
-        sep = url =~ /\?/ ? '&' : '?'
-        url << "#{sep}#{URI.escape(qs.join('&'))}"
+        sep = copy =~ /\?/ ? '&' : '?'
+        copy << "#{sep}#{URI.escape(qs.join('&'))}"
       end
-      url
+      copy
     end
   end
 end
