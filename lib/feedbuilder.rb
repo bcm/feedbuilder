@@ -7,6 +7,6 @@ require 'active_support/core_ext/object/blank'
 require 'feedbuilder/provider'
 require 'feedbuilder/url_builder'
 
-module Feedbuilder
+module FeedBuilder
   mattr_accessor :feed_id_domain
 end
