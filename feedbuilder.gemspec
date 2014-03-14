@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "feedbuilder"
 
-  s.add_dependency 'activesupport', '~> 3.0', '>= 3.0.0'
+  s.add_dependency 'activesupport', '>= 3.0.0'
   s.add_dependency 'ratom', '~> 0.8', '>= 0.8.2'
   s.add_dependency 'addressable', '~> 2.3', '>= 2.3.5'
   s.add_development_dependency 'rspec', '~> 2.0'
