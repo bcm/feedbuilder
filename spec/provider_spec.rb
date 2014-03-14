@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe FeedBuilder::Provider do
   describe "#build_feed" do
     it "builds a feed" do
