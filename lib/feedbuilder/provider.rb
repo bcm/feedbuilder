@@ -29,17 +29,18 @@ module FeedBuilder
         if collection.respond_to?(:total_pages) && collection.respond_to?(:current_page) &&
             collection.respond_to?(:per_page)
           if collection.total_pages > 1
-            feed.links << Atom::Link.new(:href => url_builder.first_url(collection.per_page), :rel => :first)
+            feed.links << Atom::Link.new(:href => url_builder.first_url(collection.per_page), :rel => :first,
+                                         :type => 'application/atom+xml')
             if collection.current_page > 1
               feed.links << Atom::Link.new(:href => url_builder.prev_url(collection.current_page, collection.per_page),
-                :rel => :previous)
+                :rel => :previous, :type => 'application/atom+xml')
             end
             if collection.current_page < collection.total_pages
               feed.links << Atom::Link.new(:href => url_builder.next_url(collection.current_page, collection.per_page),
-                :rel => :next)
+                :rel => :next, :type => 'application/atom+xml')
             end
             feed.links << Atom::Link.new(:href => url_builder.last_url(collection.total_pages, collection.per_page),
-              :rel => :last)
+              :rel => :last, :type => 'application/atom+xml')
           end
         end
         collection.each {|model| feed.entries << build_entry(model, &block)}
