@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-rvm use --create "1.9.3@feedbuilder"
